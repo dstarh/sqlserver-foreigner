@@ -7,7 +7,7 @@ module Foreigner
         # Called from schema_dump
         fk_info = select_all %{
           SELECT  to_table.name AS to_table,
-                  -- from_table.name AS from_table,
+                  from_table.name AS from_table,
                   from_column.name AS from_column,
                   to_column.name AS primary_key,
                   foreign_key.name AS name,
@@ -29,7 +29,7 @@ module Foreigner
             AND   f.rkey = to_column.colid
             AND   to_column.id = to_table.id
             AND   from_table.name = '#{table_name}'
-          ORDER BY from_table.name, to_table.name, foreign_key.name, from_column.name
+          ORDER BY from_table, to_table, name, from_column
         }
 
         fk_info.map do |row|
